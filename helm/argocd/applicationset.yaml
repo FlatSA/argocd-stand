@@ -1,0 +1,49 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: applicationset
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/manifest-generate-paths: .
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  generators:
+    - git:
+        repoURL: git@github.com:FlatSA/argocd-stand.git
+        revision: HEAD
+        directories:
+          - path: helm/*
+          - path: helm/argocd
+            exclude: true
+  template:
+    metadata:
+      name: '{{path.basename}}-application'
+      namespace: argocd
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+    spec:
+      destination:
+        server: "https://kubernetes.default.svc.cluster.local"
+        namespace: '{{path.basename}}'
+      project: default
+      source:
+        path: '{{path}}'
+        repoURL: git@github.com:FlatSA/argocd-stand.git
+        targetRevision: HEAD
+        plugin:
+          name: argocd-vault-plugin-helm
+          env:
+            - name: HELM_RELEASE_NAME
+              value: '{{path.basename}}-stand'
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: false
+        syncOptions:
+          - ApplyOutOfSyncOnly=true
+          - CreateNamespace=true
+  syncPolicy:
+    applicationsSync: create-update
+    preserveResourcesOnDeletion: true
