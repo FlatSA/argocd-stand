@@ -9,9 +9,6 @@ spec:
     repoURL: https://github.com/FlatSA/argocd-stand.git
     path: helm/argocd
     targetRevision: HEAD
-    directory:
-      recurse: true
-      jsonnet: {}
   destination:
     namespace: argocd
     server: "https://kubernetes.default.svc"
