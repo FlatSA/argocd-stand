@@ -15,7 +15,7 @@ spec:
         revision: HEAD
         directories:
           - path: helm/*
-          - path: helm/mercury-cluster/
+          - path: helm/mercury-cluster
             exclude: true
   template:
     metadata:
@@ -29,7 +29,7 @@ spec:
         namespace: '{{path.basename}}'
       project: default
       source:
-        path: '{{path}}/argocd'
+        path: 'helm/{{path.basename}}/argocd/applications'
         repoURL: https://github.com/FlatSA/argocd-stand.git
         targetRevision: HEAD
         helm:
