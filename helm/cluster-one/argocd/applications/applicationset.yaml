@@ -33,7 +33,7 @@ spec:
         repoURL: https://github.com/FlatSA/argocd-stand.git
         targetRevision: HEAD
         helm:
-          releaseName: '{{path.basename}}-applications'
+          releaseName: '{{path.basename}}'
       # syncPolicy:
       #   automated:
       #     selfHeal: true
