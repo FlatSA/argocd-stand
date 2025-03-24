@@ -33,14 +33,14 @@ spec:
         repoURL: https://github.com/FlatSA/argocd-stand.git
         targetRevision: HEAD
         helm:
-          releaseName: '{{path.basename}}'
-      syncPolicy:
-        automated:
-          selfHeal: true
-          prune: true
-        syncOptions:
-          - ApplyOutOfSyncOnly=true
-          - CreateNamespace=true
+          releaseName: '{{path.basename}}-applications'
+      # syncPolicy:
+      #   automated:
+      #     selfHeal: true
+      #     prune: true
+      #   syncOptions:
+      #     - ApplyOutOfSyncOnly=true
+      #     - CreateNamespace=true
   syncPolicy:
     applicationsSync: create-update
     preserveResourcesOnDeletion: true
