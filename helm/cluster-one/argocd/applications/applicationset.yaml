@@ -15,7 +15,7 @@ spec:
         revision: HEAD
         directories:
           - path: helm/cluster-one/*
-          - path: helm/cluser-one/argocd
+          - path: helm/cluster-one/argocd
             exclude: true
   template:
     metadata:
