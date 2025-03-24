@@ -1,0 +1,46 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: applicationset
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/manifest-generate-paths: .
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/FlatSA/argocd-stand.git
+        revision: HEAD
+        directories:
+          - path: helm/*
+          - path: helm/mercury-cluster/
+            exclude: true
+  template:
+    metadata:
+      name: '{{path.basename}}-application'
+      namespace: argocd
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+    spec:
+      destination:
+        server: "https://kubernetes.default.svc"
+        namespace: '{{path.basename}}'
+      project: default
+      source:
+        path: '{{path}}/argocd'
+        repoURL: https://github.com/FlatSA/argocd-stand.git
+        targetRevision: HEAD
+        helm:
+          releaseName: '{{path.basename}}'
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+        syncOptions:
+          - ApplyOutOfSyncOnly=true
+          - CreateNamespace=true
+  syncPolicy:
+    applicationsSync: create-update
+    preserveResourcesOnDeletion: true
