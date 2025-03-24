@@ -29,11 +29,9 @@ spec:
         namespace: '{{path.basename}}'
       project: default
       source:
-        path: 'helm/{{path.basename}}/argocd/applications'
+        path: '{{path}}/argocd/applications'
         repoURL: https://github.com/FlatSA/argocd-stand.git
         targetRevision: HEAD
-        helm:
-          releaseName: '{{path.basename}}'
       syncPolicy:
         automated:
           selfHeal: true

@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/FlatSA/argocd-stand.git
-    path: helm/argocd
+    path: helm/cluster-one/argocd/applications
     targetRevision: HEAD
   destination:
     namespace: argocd

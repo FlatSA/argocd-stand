@@ -14,8 +14,8 @@ spec:
         repoURL: https://github.com/FlatSA/argocd-stand.git
         revision: HEAD
         directories:
-          - path: helm/*
-          - path: helm/argocd
+          - path: helm/cluster-one/*
+          - path: helm/cluser-one/argocd
             exclude: true
   template:
     metadata:
