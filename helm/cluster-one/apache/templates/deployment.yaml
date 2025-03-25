@@ -6,6 +6,7 @@ metadata:
     {{- include "apache.labels" . | nindent 4 }}
     app: apache
 spec:
+  revisionHistoryLimit: 3
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
@@ -26,7 +27,6 @@ spec:
         {{- end }}
         app: apache
     spec:
-      revisionHistoryLimit: 3
       containers:
         - name: {{ .Chart.Name }}
           {{- with .Values.securityContext }}
