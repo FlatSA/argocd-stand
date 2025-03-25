@@ -1,0 +1,35 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-app
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/manifest-generate-paths: .
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  template:
+    metadata:
+      name: '{{path.basename}}-application'
+      namespace: argocd
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: .
+    spec:
+      destination:
+        server: "https://kubernetes.default.svc"
+        namespace: '{{path.basename}}'
+      project: default
+      source:
+        path: '{{path}}'
+        repoURL: https://github.com/FlatSA/argocd-stand.git
+        targetRevision: HEAD
+        helm:
+          releaseName: '{{path.basename}}'
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+        syncOptions:
+          - ApplyOutOfSyncOnly=true
+          - CreateNamespace=true
