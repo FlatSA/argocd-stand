@@ -1,0 +1,91 @@
+---
+# Source: apache/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: release-name-apache-service
+  labels:
+    helm.sh/chart: apache-0.1.0
+    app.kubernetes.io/name: apache
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+    app: apache
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 8081
+      protocol: TCP
+      name: apache
+  selector:
+    app.kubernetes.io/name: apache
+    app.kubernetes.io/instance: release-name
+    app: apache
+---
+# Source: apache/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name-apache
+  labels:
+    helm.sh/chart: apache-0.1.0
+    app.kubernetes.io/name: apache
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+    app: apache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: apache
+      app.kubernetes.io/instance: release-name
+      app: apache
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: apache-0.1.0
+        app.kubernetes.io/name: apache
+        app.kubernetes.io/instance: release-name
+        app.kubernetes.io/version: "1.16.0"
+        app.kubernetes.io/managed-by: Helm
+        app: apache
+    spec:
+      revisionHistoryLimit: 3
+      containers:
+        - name: apache
+          image: "httpd:2.4"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: apache
+              containerPort: 8081
+              protocol: TCP
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+---
+# Source: apache/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "release-name-apache-test-connection"
+  labels:
+    helm.sh/chart: apache-0.1.0
+    app.kubernetes.io/name: apache
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['release-name-apache:8081']
+  restartPolicy: Never
