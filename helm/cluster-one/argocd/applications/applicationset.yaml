@@ -34,7 +34,7 @@ spec:
         targetRevision: HEAD
         helm:
           releaseName: '{{path.basename}}'
-      ingoreDifferences:
+      ignoreDifferences:
         - group: "apps"
           kind: "Deployment"
       syncPolicy:
