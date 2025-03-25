@@ -34,13 +34,17 @@ spec:
         targetRevision: HEAD
         helm:
           releaseName: '{{path.basename}}'
-      # syncPolicy:
-      #   automated:
-      #     selfHeal: true
-      #     prune: true
-      #   syncOptions:
-      #     - ApplyOutOfSyncOnly=true
-      #     - CreateNamespace=true
+      ingoreDifferences:
+        - group: "apps"
+          king: "Deployment"
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
+        syncOptions:
+          - ApplyOutOfSyncOnly=true
+          - CreateNamespace=true
+          - RespectIngoreDifferences=true
   syncPolicy:
     applicationsSync: create-update
     preserveResourcesOnDeletion: true
