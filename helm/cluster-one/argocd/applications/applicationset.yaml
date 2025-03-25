@@ -37,6 +37,8 @@ spec:
       ignoreDifferences:
         - group: "apps"
           kind: "Deployment"
+          jsonPointers:
+          - /spec/containers/image
       syncPolicy:
         automated:
           selfHeal: true
