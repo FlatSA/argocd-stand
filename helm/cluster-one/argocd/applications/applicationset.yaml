@@ -36,7 +36,7 @@ spec:
           releaseName: '{{path.basename}}'
       ingoreDifferences:
         - group: "apps"
-          king: "Deployment"
+          kind: "Deployment"
       syncPolicy:
         automated:
           selfHeal: true
