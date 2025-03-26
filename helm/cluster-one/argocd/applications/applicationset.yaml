@@ -39,14 +39,14 @@ spec:
           kind: "Deployment"
           jsonPointers:
           - /spec
-      syncPolicy:
-        automated:
-          selfHeal: true
-          prune: true
-        syncOptions:
-          - ApplyOutOfSyncOnly=true
-          - CreateNamespace=true
-          - RespectIngoreDifferences=true
+      # syncPolicy:
+      #   automated:
+      #     selfHeal: true
+      #     prune: true
+      #   syncOptions:
+      #     - ApplyOutOfSyncOnly=true
+      #     - CreateNamespace=true
+      #     - RespectIngoreDifferences=true
   syncPolicy:
     applicationsSync: create-update
     preserveResourcesOnDeletion: true
